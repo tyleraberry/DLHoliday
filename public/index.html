@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Delta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TimelineMax.min.js" ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="CustomEase.min.js"></script>
+    <script src="main.js"></script>
+
+    <script> function init(){
+            if (typeof io !== 'undefined') {
+            const socket = io('http://localhost:3000');
+            console.log(socket)
+        socket.on('ticketDetected', function(winner) {
+            currentTicketIsWinner = winner;
+            console.log(winner)
+            insertResponder();
+            console.log('running game')
+            
+    
+        })
+    
+    }
+}
+    </script>
+</head>
+<body onload="init();">
+    <div id="container">
+        <div id="result"></div>
+        <div id="sign">
+            <div id="winner">
+                <img src="images/winner-on.png" />
+            </div>
+            <div id="loser">
+                <img src="images/loser-on.png" />
+            </div>
+        </div>
+        
+        <div id="insert-ticket">
+            <img src="images/insert-your-ticket.png" />
+        </div>
+        <div id="arrow"></div>
+        <div id="carousel"></div>
+        <div id="belt">
+            <div id="wheels"></div>
+        </div>
+    </div>
+    
+</body>
+</html>
