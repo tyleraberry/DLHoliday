@@ -14,21 +14,29 @@
     <script src="CustomEase.min.js"></script>
     <script src="main.js"></script>
 
-    <script> function init(){
+    <script> 
+        function init() {
             if (typeof io !== 'undefined') {
-            const socket = io('http://localhost:3000');
-            console.log(socket)
-        socket.on('ticketDetected', function(winner) {
-            currentTicketIsWinner = winner;
-            console.log(winner)
-            insertResponder();
-            console.log('running game')
             
-    
-        })
-    
-    }
-}
+                const socket = io('http://localhost:3000');
+                // console.log(socket)
+            
+                socket.on('ticketDetected', function(winner) {
+                    currentTicketIsWinner = winner;
+                    
+                    console.log(winner);
+                    insertResponder(winner);
+                    
+                })
+            }
+
+            // setTimeout(() => {
+            //     insertResponder(Math.round(Math.random()));    
+            // }, 3000);
+            
+        }
+
+        
     </script>
 </head>
 <body onload="init();">

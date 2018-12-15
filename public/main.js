@@ -1,7 +1,5 @@
 $(function() {
-
-    let isLoser = true;
-
+    
     CustomEase.create("conveyor", "M0,0 C0.144,0.082 0.568,0.51 0.658,0.792 0.846,1.382 0.838,1 1,1");
 
     const numOfBags = 50;
@@ -10,8 +8,9 @@ $(function() {
     const carousel = $("#carousel");
     const sign  = $("#sign")
 
-    function buildCarousel() {
+    function buildCarousel(isWinner) {
 
+        // console.log(isWinner);
         carousel.css('left', '1920px').empty();
 
         for (let index = 0; index < numOfBags; index++) { 
@@ -19,7 +18,7 @@ $(function() {
             let randomNum = Math.floor(Math.random() * 7) + 1 ; // select one of the 7 bags
             let isFilled = Math.round(Math.random()) || index === selectedBag  ? '-filled.png' : '.png';
 
-            if(index === selectedBag && isLoser) {
+            if(index === selectedBag && !isWinner) {
                 isFilled = '.png'
             }
 
@@ -31,8 +30,9 @@ $(function() {
 
     }   
 
-    buildCarousel()
-    window.insertResponder = function(){
+    window.insertResponder = function(isWinner) {
+
+        buildCarousel(isWinner)
 
         let pos = Number(selectedBag) * $('.bag').first().width();
         pos = pos * -1;
@@ -43,11 +43,11 @@ $(function() {
         TweenMax.to("#insert-ticket", 2.3, {x:'-1920px'});
         TweenMax.to("#carousel", 10, {x:`${pos}px`, delay:.2, ease: 'conveyor', onComplete:function(){
             moveWheels.pause();
-            if(isLoser) {
-                loserSign()
+            if(isWinner) {
+                winnerSign()
             }
             else {
-                winnerSign()
+                loserSign()
             }
 
         }});
@@ -57,7 +57,13 @@ $(function() {
     function winnerSign() {
         TweenMax.to("#winner", 0.5, {autoAlpha:1})
         TweenMax.from("#winner img", 0.5, {alpha:0, yoyo:true, repeat:5, onComplete:function(){
-            // final winner image goes here
+            $("#result")
+                .css('top', '-1080px')
+                .append(`<img src='images/winner.png' />`)
+            TweenMax.to("#result", 0.5, {css:{top:0}})
+            setTimeout(() => {
+                window.location.reload()
+            }, 5000);
         }});
         
     }
@@ -69,6 +75,7 @@ $(function() {
                 .css('top', '-1080px')
                 .append(`<img src='images/sorry.png' />`)
             TweenMax.to("#result", 0.5, {css:{top:0}})
+            
             setTimeout(() => {
                 window.location.reload()
             }, 5000);
