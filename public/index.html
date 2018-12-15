@@ -19,7 +19,7 @@
             if (typeof io !== 'undefined') {
             
                 const socket = io('http://localhost:3000');
-                // console.log(socket)
+                console.log(socket)
             
                 socket.on('ticketDetected', function(winner) {
                     currentTicketIsWinner = winner;
