@@ -177,10 +177,10 @@ function sendTicket() {
     }
 
     if(data.isWinner) {
-        do {
             claimIndex++;
-        }
-        while (claimIndex < 4);
+        if (claimIndex === 4){
+            claimIndex = 1;
+        };
     }
 
     if ( ticketIndex < tickets.length - 2 ) {
