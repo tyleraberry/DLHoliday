@@ -161,7 +161,7 @@ tickets.push( false );
 tickets.push( false );
 
 var ticketIndex = 0;
-var claimIndex = 0;
+var claimIndex = 1;
 
 ticketManager.addListener('ticketDetected',function(tag) {
 
@@ -173,15 +173,21 @@ function sendTicket() {
 
     var data = {
         'isWinner': tickets[ ticketIndex ],
-        'claimNumber': 2
+        'claimNumber': claimIndex
     }
 
-    io.emit('ticketDetected', data); // Send to web socket listener.
-    
+    if(data.isWinner) {
+        do {
+            claimIndex++;
+        }
+        while (i < 4);
+    }
 
     if ( ticketIndex < tickets.length - 2 ) {
         ticketIndex ++;
     }
+    
+    io.emit('ticketDetected', data); // Send to web socket listener.
 
 
 
