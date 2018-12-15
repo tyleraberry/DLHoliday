@@ -21,11 +21,11 @@
                 const socket = io('http://localhost:3000');
                 console.log(socket)
             
-                socket.on('ticketDetected', function(winner) {
-                    currentTicketIsWinner = winner;
+                socket.on('ticketDetected', function(data) {
+                    currentTicketIsWinner = data.isWinner;
                     
-                    console.log(winner);
-                    insertResponder(winner);
+                    console.log(data.isWinner);
+                    insertResponder(data.isWinner, data.claimNumber);
                     
                 })
             }

@@ -30,7 +30,7 @@ $(function() {
 
     }   
 
-    window.insertResponder = function(isWinner) {
+    window.insertResponder = function(isWinner, claimNumber) {
 
         buildCarousel(isWinner)
 
@@ -44,7 +44,7 @@ $(function() {
         TweenMax.to("#carousel", 10, {x:`${pos}px`, delay:.2, ease: 'conveyor', onComplete:function(){
             moveWheels.pause();
             if(isWinner) {
-                winnerSign()
+                winnerSign(claimNumber)
             }
             else {
                 loserSign()
@@ -54,12 +54,15 @@ $(function() {
         TweenMax.to("#arrow", 1, {y:'-=100', delay:8})
     }
 
-    function winnerSign() {
+    function winnerSign(claimNumber) {
+
+        let img = `<img src='images/winner${claimNumber}.png' />`
+
         TweenMax.to("#winner", 0.5, {autoAlpha:1})
-        TweenMax.from("#winner img", 0.5, {alpha:0, yoyo:true, repeat:5, onComplete:function(){
+        TweenMax.from("#winner img", 0.5, {alpha:0, yoyo:true, repeat:5, onComplete:function() {
             $("#result")
                 .css('top', '-1080px')
-                .append(`<img src='images/winner.png' />`)
+                .append(img)
             TweenMax.to("#result", 0.5, {css:{top:0}})
             setTimeout(() => {
                 window.location.reload()
@@ -70,7 +73,7 @@ $(function() {
 
     function loserSign() {
         TweenMax.to("#loser", 0.5, {autoAlpha:1})
-        TweenMax.from("#loser img", 0.5, {alpha:0, yoyo:true, repeat:5, onComplete:function(){
+        TweenMax.from("#loser img", 0.5, {alpha:0, yoyo:true, repeat:5, onComplete:function() {
             $("#result")
                 .css('top', '-1080px')
                 .append(`<img src='images/sorry.png' />`)
@@ -83,5 +86,3 @@ $(function() {
     }
 
 })
-
-
