@@ -180,13 +180,13 @@ function sendTicket() {
         do {
             claimIndex++;
         }
-        while (i < 4);
+        while (claimIndex < 4);
     }
 
     if ( ticketIndex < tickets.length - 2 ) {
         ticketIndex ++;
     }
-    
+
     io.emit('ticketDetected', data); // Send to web socket listener.
 
 
