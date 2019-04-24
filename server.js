@@ -10,15 +10,7 @@ var tickets = [];
 
 tickets.push( true );
 tickets.push( false );
-tickets.push( false );
-tickets.push( false );
-tickets.push( false );
-tickets.push( false );
-tickets.push( false );
 tickets.push( true );
-tickets.push( true );
-tickets.push( false );
-tickets.push( false );
 tickets.push( false );
 tickets.push( false );
 tickets.push( false );
@@ -59,6 +51,7 @@ tickets.push( false );
 tickets.push( false );
 tickets.push( false );
 tickets.push( false );
+
 
 var ticketIndex = 0;
 var claimIndex = 1;
@@ -78,6 +71,7 @@ function sendTicket() {
 
     if(data.isWinner) {
             claimIndex++;
+            console.log('winner')
         if (claimIndex === 4){
             claimIndex = 1;
         };
@@ -85,11 +79,11 @@ function sendTicket() {
 
     if ( ticketIndex < tickets.length - 2 ) {
         ticketIndex ++;
-        console.log (tickets.length);
+        console.log (ticketIndex);
     }
-    else if (ticketIndex > tickets.length - 2 ) {
+    if (ticketIndex >= tickets.length - 2) {
         ticketIndex = 0;
-        console.log (tickets.length, 'max count reached. restarting count');
+        console.log ('max count reached. restarting count');
     };
 
     io.emit('ticketDetected', data); // Send to web socket listener.

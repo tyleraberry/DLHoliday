@@ -44,6 +44,8 @@ $(function() {
         TweenMax.to("#carousel", 10, {x:`${pos}px`, delay:.2, ease: 'conveyor', onComplete:function(){
             moveWheels.pause();
             if(isWinner) {
+                // pick claim number from set
+                // increment claim number count
                 winnerSign(claimNumber)
             }
             else {
