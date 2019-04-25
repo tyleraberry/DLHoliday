@@ -8,6 +8,7 @@
     "env": "0.0.2",
     "express": "^4.16.4",
     "nodemon": "^1.18.10",
+    "readline-sync": "^1.4.9",
     "serialport": "^7.1.0",
     "serve": "^10.1.1",
     "socket.io": "^2.2.0"
