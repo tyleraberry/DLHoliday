@@ -10,56 +10,52 @@ let userCounter = 0 ;
 let maxUserCounter = 210 ; // this should be 210 i believe 
 let winnerExistInSegment = false ; 
 let ticketArray = [] ; 
-
+let totalPrizesAwarded=0 ; 
 let totalPrizesAvail=getTotalPizes() ; 
 
 // pull one item from the prize pool to hold for the last user
 // assumes there is at least one prize in the pool ... else why are we here
 let firstUserPrize = getRandomPrize(null) ; 
 let lastUserPrize = getRandomPrize(prizePool[2]) ; 
-let totalPrizesAwarded=0 ; 
 
 // manage the distribution of prizes equal across the full breath of users 
 let segments = Math.ceil(maxUserCounter/totalPrizesAvail) ; 
 
 
+// allocate first and last
+console.log("Your are the first user and won: ", firstUserPrize); 
+ticketArray.push([userCounter, firstUserPrize ]); 
+userCounter ++ ; 
+
+// Make sure store the last item on the output array
+console.log("Your are the last user and won: ", lastUserPrize); 
+ticketArray.push([userCounter, lastUserPrize ]); 
+totalPrizesAwarded = 2  ; 
+userCounter ++ ;   
+console.log(getTotalPizes());
+
+
+
 // Setup the ouput array with requred data
 while (userCounter < maxUserCounter) {
+    console.log(userCounter);
 	// input = readline.question("Continue ('n' to exit)? "); 
     
-    if ( userCounter == 0 ) {
-        // aware the last user with the saved prize
-        // console.log("Your are the first user and won: ", firstUserPrize); 
-        ticketArray.push([userCounter, firstUserPrize ]); 
-        totalPrizesAwarded ++ ; 
-    }
-    else if ( userCounter == maxUserCounter ) {
-        // aware the last user with the saved prize
-        // console.log("Your are the last user and won: ", lastUserPrize); 
-        ticketArray.push([userCounter, lastUserPrize ]); 
-        totalPrizesAwarded ++ ; 
-    }
-    else if ( isWinner() && prizePool.length > 0 ) {
+    if ( isWinner() && prizePool.length > 0 ) {
         // get the prize, if available
         let awaredPrizeCategory = getRandomPrize(null) ; 
         // console.log(userCounter, ": You won item in category: ", awaredPrizeCategory) ; 
         ticketArray.push([userCounter, awaredPrizeCategory]); 
         totalPrizesAwarded ++ ; 
     }
-    userCounter ++ ;  // keep track of number of attempts 
+    
+    userCounter ++ ;  // 
 }
- 
+ticketCleanup() ; 
 
-// if the user is a winner, set isWinner to true
-// make sure all tickets are consumed
-ticketCleanup(ticketArray) ; 
 
-console.log("Prizes: ",totalPrizesAwarded, " of ", totalPrizesAvail, " awared.", "tickets array length is:", ticketArray.length) ;
 
 var tickets = [];
-
-
-
 var ticketIndex = 0;
 var claimIndex = 1;
 
@@ -80,7 +76,7 @@ function sendTicket() {
         claimIndex = returnedData[0][1] ; 
     }
 
-    console.log(":::: ", claimIndex, " Current index: ", ticketIndex) ; 
+    // console.log(":::: ", claimIndex, " Current index: ", ticketIndex, "award type: ") ; 
     
     var data = {
         'isWinner': winner,
@@ -89,11 +85,11 @@ function sendTicket() {
 
     if ( ticketIndex < ticketArray.length - 1 ) {
         ticketIndex ++;
-        console.log (ticketIndex);
+        // console.log (ticketIndex);
     }
     if (ticketIndex == ticketArray.length - 1) {
         ticketIndex = 0;
-        console.log ('resetting count. we go again!');
+        // console.log ('resetting count. we go again!');
     }
     
     io.emit('ticketDetected', data); // Send to web socket listener.
@@ -103,22 +99,23 @@ function sendTicket() {
 
 }
 
-
-
-function ticketCleanup(ticketArray){
+function ticketCleanup(){
 
 	// ensure we do not have more winners than Prizes
-	while ( totalPrizesAwarded < totalPrizesAvail ){
-		targetIndex = getRandomNumBetween(1, ticketArray.length - 2) ; 
-
-		// if  user not already in output
+	while ( getTotalPizes() > 0  ){
+        targetIndex = getRandomNumBetween(1, ticketArray.length - 2) ; 
+        
+        // if  user not already in output
 		if ( isUserIndexInOutput(targetIndex, ticketArray).length == 0 ){
 			ticketArray.push([targetIndex, getRandomPrize(null)]) ; 
 			totalPrizesAwarded ++ ; 
 			// console.log(" !!! pushed prize for user, ",targetIndex ) ; 
-		}
+        }
 	}
 }
+
+
+//#region 
 
 /**
  * 
@@ -141,7 +138,7 @@ function isWinner(){
 	// inforce max number of winners per segment
 	localWinner = Math.round(Math.random()); 
 	
-	// console.log("Current user:", userCounter) ; 
+	// // console.log("Current user:", userCounter) ; 
 
 	if ( userCounter % segments == 0 ) {
 		if ( ! winnerExistInSegment) {
@@ -234,6 +231,8 @@ function getTotalPizes(){
 	return sum ; 
 }
 
+
+//#endregion
 
 /******************************************** */
 
